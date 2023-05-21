@@ -45,7 +45,7 @@ export default defineComponent({
     return {
       authStore: AuthStore,
       links: [
-        { name: "Home", path: "/" },
+        { name: "Home", path: "/home" },
         { name: "Records", path: "/records" },
       ],
     };
