@@ -2,28 +2,39 @@
   <div class="d-flex justify-center align-center h-screen">
     <div class="login-container">
       <h1 class="text-center mb-5">Login</h1>
-      <v-form id="login-form">
+      <v-form id="login-form" ref="form" @submit.prevent="signIn">
         <v-text-field
           id="username"
           name="username"
-          v-model="store.username"
+          v-model="username"
           label="Username"
+          :rules="rules.username"
+          class="mb-5"
         ></v-text-field>
         <v-text-field
           id="password"
           label="Password"
           name="password"
           type="password"
-          v-model="store.password"
+          v-model="password"
+          :rules="rules.password"
+          class="mb-5"
         ></v-text-field>
-        <v-btn
-          color="primary"
-          variant="elevated"
-          size="large"
-          class="w-100"
-          @click.prevent="login"
-          >Login</v-btn
-        >
+        <div class="mb-5">
+          <v-alert v-if="error" type="error" closable>
+            {{ error }}
+          </v-alert>
+        </div>
+        <div>
+          <v-btn
+            color="primary"
+            variant="elevated"
+            size="large"
+            class="w-100"
+            type="submit"
+            >Login</v-btn
+          >
+        </div>
       </v-form>
       <div class="mt-5">
         <v-btn
@@ -41,37 +52,36 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import AuthService from "../services/AuthService";
-import { LoginStore } from "../stores/LoginStore";
+import { Ref, defineComponent, ref } from "vue";
+import { useLogin } from "../common/auth/login";
 
 export default defineComponent({
   name: "LoginForm",
-  data() {
-    return {
-      store: LoginStore,
-    };
-  },
-  mounted() {
-    if (this.store.isLoggedIn) {
-      this.$router.push("/");
-    }
-  },
-  methods: {
-    async login() {
-      const response = await AuthService.login(
-        this.store.username,
-        this.store.password
-      );
-
-      const { access_token: accessToken, refresh_token: refreshToken } =
-        response;
-
-      this.store.login({ accessToken, refreshToken });
-      this.$router.push("/");
-    },
-  },
 });
+</script>
+
+<script lang="ts" setup>
+const form: Ref<any> = ref(null);
+const username = ref("");
+const password = ref("");
+const { login, error } = useLogin();
+
+const rules = {
+  username: [
+    (v: string) => !!v || "Username is required",
+    (v: string) => /.+@.+\..+/.test(v) || "Username must be a valid email",
+  ],
+  password: [(v: string) => !!v || "Password is required"],
+};
+
+async function signIn() {
+  const { valid } = await form?.value?.validate() || {};
+  if (!valid) {
+    return
+  };
+
+  login(username.value, password.value);
+}
 </script>
 
 <style scoped>
