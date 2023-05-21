@@ -8,7 +8,24 @@ const routes: Readonly<RouteRecordRaw[]> = [
     component: () => import("../views/MainView.vue"),
     meta: {
         requiresAuth: true,
-    }
+    },
+    children: [
+      {
+        path: "/",
+        name: "Index",
+        redirect: "/home",
+      },
+      {
+        path: "/home",
+        name: "Home",
+        component: () => import("../views/HomeView.vue"),
+      },
+      {
+        path: "/records",
+        name: "Records",
+        component: () => import("../views/RecordView.vue"),
+      }
+    ]
   },
   {
     path: "/login",
