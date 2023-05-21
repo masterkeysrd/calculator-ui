@@ -9,21 +9,29 @@
         <v-col cols="12" md="12">
           <v-text-field label="Input 2" type="number"></v-text-field>
         </v-col>
-        <v-col cols="12">
-          <div class="d-flex justify-space-between">
-            <v-btn size="large" color="primary">&plus;</v-btn>
-            <v-btn size="large" color="primary">&minus;</v-btn>
-            <v-btn size="large" color="primary">&lowast;</v-btn>
-            <v-btn size="large" color="primary">&divide;</v-btn>
-            <v-btn size="large" color="primary">&radic;</v-btn>
-          </div>
-        </v-col>
-        <v-col>
-          <v-btn size="large" color="primary" class="w-100"
-            >Random String</v-btn
-          >
-        </v-col>
+        <template v-for="widget in widgets" :key="widget.id">
+          <v-col v-if="widget.symbol" :cols="widget.size">
+            <v-btn size="large" :color="widget.btnColor" class="w-100">
+              {{ widget.symbol }}
+            </v-btn>
+          </v-col>
+        </template>
       </v-row>
     </v-container>
   </v-container>
 </template>
+
+<script lang="ts">
+import { defineComponent } from "vue";
+import { useListOperations } from "../../services/operation.service";
+import { useOperationWidgetMapping } from "../../common/utils/operation-widget.util";
+
+export default defineComponent({
+  name: "Calculator",
+});
+</script>
+
+<script lang="ts" setup>
+const { operations } = useListOperations();
+const widgets = useOperationWidgetMapping(operations);
+</script>
