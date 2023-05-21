@@ -1,10 +1,10 @@
-import axios from "axios";
+import { client } from "../common/http";
 
 const API_URL = "http://localhost:8080/api/v1/auth";
 
 const AuthService = {
   login: async (username: string, password: string) => {
-    const response = await axios.post(`${API_URL}/sign-in`, {
+    const response = await client.post(`${API_URL}/sign-in`, {
       username,
       password,
     });
