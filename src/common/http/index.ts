@@ -1,3 +1,3 @@
-import client from './ http-client';
+import client, { useHttp } from './ http-client';
 
-export { client };
+export { client, useHttp };
