@@ -1,15 +1,12 @@
 <template>
-    <div>
+    <v-app>
         <NavBar />
-        <h1>Home</h1>
-        <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
-            voluptatum, quibusdam, quia, quae voluptates voluptatem quod
-            voluptatibus quos doloribus quas voluptate. Quisquam, quibusdam,
-            quia, quae voluptates voluptatem quod voluptatibus quos doloribus
-            quas voluptate.
-        </p>
-    </div>
+        <v-main class="bg-grey-lighten-3">
+            <v-container>
+                <router-view />
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 
 <script lang="ts">
