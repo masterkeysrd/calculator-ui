@@ -4,8 +4,8 @@ import { UseAuthGuard } from "./guards/AuthGuard";
 const routes: Readonly<RouteRecordRaw[]> = [
   {
     path: "/",
-    name: "Home",
-    component: () => import("../views/HomeView.vue"),
+    name: "Main",
+    component: () => import("../views/MainView.vue"),
     meta: {
         requiresAuth: true,
     }

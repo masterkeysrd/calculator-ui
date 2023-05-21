@@ -10,6 +10,10 @@ const AuthService = {
     });
     return response.data;
   },
+  logout: async () => {
+    const response = await client.post(`${API_URL}/sign-out`);
+    return response.data;
+  }
 };
 
 export default AuthService;

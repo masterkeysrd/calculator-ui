@@ -1,5 +1,6 @@
 <template>
     <div>
+        <NavBar />
         <h1>Home</h1>
         <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam
@@ -13,8 +14,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import NavBar from "../layout/NavBar.vue";
 
 export default defineComponent({
     name: "HomeView",
+    components: {
+        NavBar,
+    },
 });
 </script>
