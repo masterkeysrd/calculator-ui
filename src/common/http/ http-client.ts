@@ -8,7 +8,7 @@ import {
 const client = axios.create();
 
 client.interceptors.request.use(AuthRequestInterceptor);
-client.interceptors.response.use(AuthResponseInterceptor);
+client.interceptors.response.use(null, AuthResponseInterceptor);
 
 export const useHttp = () => {
   const http = ref(client);

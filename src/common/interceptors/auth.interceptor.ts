@@ -3,24 +3,27 @@ import {
   HttpStatusCode,
   InternalAxiosRequestConfig,
 } from "axios";
+import { useAccessToken } from "../auth/token";
+import { useRouter } from "vue-router";
 
 export function AuthRequestInterceptor(req: InternalAxiosRequestConfig) {
-  const token = localStorage.getItem("token");
+  const token = useAccessToken();
 
-  if (token) {
-    req.headers["Authorization"] = `Bearer ${token}`;
+  if (token.value) {
+    req.headers["Authorization"] = `Bearer ${token.value}`;
   }
 
   return req;
 }
 
-export function AuthResponseInterceptor(res: AxiosResponse): AxiosResponse {
+export function AuthResponseInterceptor(error: any) {
+  const res = error.response;
   if (res.status === HttpStatusCode.Forbidden) {
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-
-    window.location.href = "/login";
+    const token = useAccessToken();
+    const router = useRouter();
+    token.value = "";
+    router.push("/login");
   }
 
-  return res;
+  return Promise.reject(error);
 }
