@@ -16,6 +16,14 @@ export interface OperationWidgetMeta {
   size: string;
 }
 
+export interface CalculatorResult {
+  recordId: number;
+  amount: number;
+  userBalance: number;
+  result: number | string;
+  date: string;
+}
+
 export interface Record {
   id: number;
   userId: number;
