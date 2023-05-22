@@ -32,7 +32,6 @@ export function usePerformCalculation() {
       result.value = await calculate(operationId, args);
     }
     catch (err: any) {
-      console.log(err.response?.data);
       error.value = err.response?.data?.message;
     }
   }
