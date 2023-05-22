@@ -1,5 +1,5 @@
 <template>
-  <v-btn v-for="link in links" :key="link.name" :to="link.path" text>
+  <v-btn v-for="link in links" :key="link.name" :to="link.path" :class="link.class" text>
     {{ link.name }}
   </v-btn>
 </template>
@@ -14,7 +14,7 @@ export default defineComponent({
 
 <script lang="ts" setup>
 const links = [
-  { name: "Home", path: "/home" },
+  { name: "Home", path: "/home", class: 'd-none d-sm-none d-md-flex' },
   { name: "Records", path: "/records" },
 ];
 </script>

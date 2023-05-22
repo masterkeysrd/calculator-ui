@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-center align-center h-screen">
-    <div class="login-container">
+    <div class="login-container ma-5">
       <h1 class="text-center mb-5">Login</h1>
       <v-form id="login-form" ref="form" @submit.prevent="signIn">
         <v-text-field
