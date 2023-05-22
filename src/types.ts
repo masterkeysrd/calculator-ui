@@ -1,3 +1,7 @@
+export interface Config {
+  apiUrl: string;
+}
+
 export interface Profile extends User {
   balance: UserBalance;
 }
@@ -49,4 +53,9 @@ export interface Record {
   userBalance: number;
   result: number;
   date: string;
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  total: number;
 }
