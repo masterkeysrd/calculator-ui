@@ -51,5 +51,17 @@ export function useLogin() {
     }
   }
 
-  return {login, error  };
-} 
+  return { login, error };
+}
+
+export function useLogout() {
+  const token = useAccessToken();
+  const router = useRouter();
+
+  function logout() {
+    token.value = "";
+    router.push("/login");
+  }
+
+  return logout;
+}
