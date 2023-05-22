@@ -40,6 +40,7 @@ import { useListOperations } from "../../services/operation.service";
 import { useOperationWidgetMapping } from "../../common/utils/operation-widget.util";
 import { useCalculate } from "../../services/calculator.service";
 import { Operation } from "../../types";
+import { useRefreshBalance } from '../../stores/profile.store';
 
 export default defineComponent({
   name: "Calculator",
@@ -53,6 +54,7 @@ const number2 = ref(0);
 const { operations } = useListOperations();
 const widgets = useOperationWidgetMapping(operations);
 const calculate = useCalculate();
+const refreshBalance = useRefreshBalance();
 
 const performOperation = async (operation: Operation) => {
   const result = await calculate(operation.id, [
@@ -61,5 +63,6 @@ const performOperation = async (operation: Operation) => {
   ]);
 
   console.log(result);
+  refreshBalance();
 };
 </script>
