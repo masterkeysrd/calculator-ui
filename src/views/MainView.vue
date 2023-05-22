@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import NavBar from "../layout/NavBar.vue";
 import { useLoadProfile } from "../stores/profile.store";
 
@@ -23,9 +23,6 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-const loadProfile = useLoadProfile();
-
-onMounted(() => {
-  loadProfile();
-});
+// TODO: add error handling
+const { } = useLoadProfile();
 </script>
