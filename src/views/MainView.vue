@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <NavBar />
+    <the-header />
     <v-main class="bg-grey-lighten-3">
       <v-container>
         <router-view />
@@ -11,18 +11,18 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import NavBar from "../layout/NavBar.vue";
+import TheHeader from "../layout/TheHeader.vue";
 import { useLoadProfile } from "../stores/profile.store";
 
 export default defineComponent({
   name: "HomeView",
   components: {
-    NavBar,
+    TheHeader,
   },
 });
 </script>
 
 <script lang="ts" setup>
 // TODO: add error handling
-const { } = useLoadProfile();
+const {} = useLoadProfile();
 </script>
