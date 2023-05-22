@@ -12,18 +12,14 @@ const state = reactive<Profile>({
 });
 
 export function useLoadProfile() {
-  const { me, getMe } = useGetMe();
-
-  async function loadProfile() {
-    await getMe();
-  }
+  const { me, error } = useGetMe();
 
   watch(me, (newMe) => {
     state.id = newMe?.id as number;
     state.username = newMe?.username as string;
   });
 
-  return loadProfile;
+  return { error };
 }
 
 export function useProfile() {
@@ -35,24 +31,18 @@ export function useProfile() {
 }
 
 export function useLoadProfileBalance() {
-  const { balance, loadMyBalance } = useGetMyBalance();
-
-  async function loadProfileBalance() {
-    await loadMyBalance();
-  }
+  const { balance, error } = useGetMyBalance();
 
   watch(balance, (newBalance) => {
     state.balance = newBalance;
   });
 
-  return loadProfileBalance;
+  return { error };
 }
 
 export function useRefreshBalance() {
-  const loadProfileBalance = useLoadProfileBalance();
-
   async function refreshBalance() {
-    await loadProfileBalance();
+    useLoadProfileBalance();
   }
 
   return refreshBalance;
