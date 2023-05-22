@@ -20,7 +20,7 @@
               v-model="number2"
             ></v-text-field>
           </v-col>
-          <ResultAlert :show="showResult" :result="result"></ResultAlert>
+          <calculator-result :show="showResult" :result="result" />
           <template v-if="error">
             <v-col cols="12" md="12">
               <v-alert v-if="error" type="error" closable>
@@ -53,11 +53,10 @@ import { mapOperationsToWidget } from "../../common/utils/operation-widget.util"
 import { usePerformCalculation } from "../../services/calculator.service";
 import { OperationWidget } from "../../types";
 import { useRefreshBalance } from "../../stores/profile.store";
-import ResultAlert from "./ResultAlert.vue";
+import CalculatorResult from "./CalculatorResult.vue";
 
 export default defineComponent({
   name: "Calculator",
-  components: { ResultAlert },
 });
 </script>
 
