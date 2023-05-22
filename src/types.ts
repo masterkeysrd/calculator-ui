@@ -28,6 +28,9 @@ export interface OperationWidgetMeta {
   symbol: string;
   btnColor: string;
   size: string;
+  rules: {
+    [key: string]: Array<(value: string) => boolean | string>;
+  }
 }
 
 export interface CalculatorResult {
