@@ -1,17 +1,18 @@
 import { client } from "../common/http";
+import config from '../common/config';
 
-const API_URL = "http://localhost:8080/api/v1/auth";
+const baseUrl = `${config.apiUrl}/v1/auth`;
 
 const AuthService = {
   login: async (username: string, password: string) => {
-    const response = await client.post(`${API_URL}/sign-in`, {
+    const response = await client.post(`${baseUrl}/sign-in`, {
       username,
       password,
     });
     return response.data;
   },
   logout: async () => {
-    const response = await client.post(`${API_URL}/sign-out`);
+    const response = await client.post(`${baseUrl}/sign-out`);
     return response.data;
   }
 };

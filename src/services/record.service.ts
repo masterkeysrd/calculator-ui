@@ -1,6 +1,7 @@
 import { useHttp } from "../common/http";
+import config from '../common/config'
 
-const API_URL = "http://localhost:8080/api/v1/records";
+const API_URL = `${config.apiUrl}/v1/records`;
 
 export function useListRecords() {
   const http = useHttp();

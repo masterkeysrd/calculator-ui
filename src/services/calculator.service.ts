@@ -1,13 +1,14 @@
 import { ref } from "vue";
 import { useHttp } from "../common/http";
+import config from "../common/config";
 
-const API_URL = "http://localhost:8080/api/v1/calculations";
+const baseUrl = `${config.apiUrl}/v1/calculations`;
 
 export function useCalculate() {
   const http = useHttp();
 
   async function calculate(operationId: number, args: string[]) {
-    const response = await http.value.post(`${API_URL}/calculate`, {
+    const response = await http.value.post(`${baseUrl}/calculate`, {
       operationId,
       arguments: args,
     });
