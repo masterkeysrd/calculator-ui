@@ -47,9 +47,9 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, ref } from "vue";
+import { Ref, defineComponent, ref, computed, unref } from "vue";
 import { useListOperations } from "../../services/operation.service";
-import { useOperationWidgetMapping } from "../../common/utils/operation-widget.util";
+import { mapOperationsToWidget } from "../../common/utils/operation-widget.util";
 import { usePerformCalculation } from "../../services/calculator.service";
 import { OperationWidget } from "../../types";
 import { useRefreshBalance } from "../../stores/profile.store";
@@ -73,9 +73,17 @@ const rules = ref({
 });
 
 const { operations } = useListOperations();
-const widgets = useOperationWidgetMapping(operations);
 const { result, error, performOperation } = usePerformCalculation();
 const refreshBalance = useRefreshBalance();
+
+const widgets = computed(() => {
+  const unrefOperations = unref(operations);
+  if (!unrefOperations) {
+    return [];
+  }
+
+  return mapOperationsToWidget(unrefOperations as OperationWidget[]);
+});
 
 const submitOperation = async (operation: OperationWidget) => {
   showResult.value = false;
