@@ -32,7 +32,6 @@ onMounted(async () => {
 });
 
 const onDelete = async (recordId: number) => {
-  console.log("Deleting record", recordId);
   await deleteRecord(recordId);
   records.value = await listRecords();
 };
