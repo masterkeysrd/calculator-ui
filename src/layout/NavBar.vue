@@ -10,25 +10,16 @@
 
       <v-spacer></v-spacer>
       <v-responsive max-width="300">
-        <div class="d-flex justify-end align-center">
-          <div>
-            <span class="text-teal-darken-2" style="font-weight: 600"
-              >Hi {{ authStore.user?.username }}!</span
-            >
+        <template v-if="isAuthenticated">
+          <div class="d-flex justify-end align-center">
+            <div>
+              <WelcomeUser />
+            </div>
+            <div class="ml-3">
+              <LogoutButton />
+            </div>
           </div>
-          <div class="ml-3">
-            <v-btn
-              v-if="authStore.isLoggedIn"
-              color="secondary"
-              size="small"
-              variant="elevated"
-              class="w-100"
-              @click="logout"
-            >
-              Logout
-            </v-btn>
-          </div>
-        </div>
+        </template>
       </v-responsive>
     </v-container>
   </v-app-bar>
@@ -36,26 +27,21 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-// import AuthService from "../services/AuthService";
-import { AuthStore } from "../stores/AuthStore";
+import { useIsAuthenticated } from "../common/auth/login";
+import LogoutButton from "../components/auth/LogoutButton.vue";
+import WelcomeUser from "../components/users/WelcomeUser.vue";
 
 export default defineComponent({
-  name: "NavBar",
-  data() {
-    return {
-      authStore: AuthStore,
-      links: [
-        { name: "Home", path: "/home" },
-        { name: "Records", path: "/records" },
-      ],
-    };
-  },
-  methods: {
-    async logout() {
-      //   await AuthService.logout();
-      this.authStore.logout();
-      this.$router.push("/login");
-    },
-  },
+    name: "NavBar",
+    components: { WelcomeUser }
 });
+</script>
+
+<script lang="ts" setup>
+const isAuthenticated = useIsAuthenticated();
+
+const links = [
+  { name: "Home", path: "/home" },
+  { name: "Records", path: "/records" },
+];
 </script>
