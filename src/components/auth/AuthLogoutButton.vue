@@ -15,7 +15,7 @@ import { defineComponent } from "vue";
 import { useLogout } from "../../common/auth/login";
 
 export default defineComponent({
-  name: "LogoutButton",
+  name: "auth-logout-button",
 });
 </script>
 
