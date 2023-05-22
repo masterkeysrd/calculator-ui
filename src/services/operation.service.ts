@@ -1,22 +1,19 @@
-import { Ref, onMounted, ref } from "vue";
-import { Operation } from "../types";
-import { useHttp } from "../common/http";
+import { ref, watch } from "vue";
+import config from "../common/config";
+import { useGet } from "../common/http/http-client";
+import { PaginatedResponse, Operation } from "../types";
 
-const API_URL = "http://localhost:8080/api/v1/operations";
+const baseUrl = `${config.apiUrl}/v1/operations`;
 
-export function useListOperations() {
-  const http = useHttp();
-  const operations: Ref<Operation[]> = ref([]);
+type ListOperationsResponse = PaginatedResponse<Operation>;
 
-  async function listOperations() {
-    const response = await http.value.get(`${API_URL}`);
-    const { data } = response.data;
-    operations.value = data;
-  }
+export function useListOperations(url = baseUrl) {
+  const { result, error } = useGet<ListOperationsResponse>(url);
+  const operations = ref<Operation[]>([]);
 
-  onMounted(listOperations);
+  watch(result, (value) => {
+    operations.value = value?.data as Operation[];
+  });
 
-  return {
-    operations,
-  };
+  return { operations, error };
 }
