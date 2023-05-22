@@ -2,15 +2,16 @@
   <v-container>
     <v-sheet rounded="lg" class="pa-5">
       <h1>Records</h1>
-      <RecordList :records="records" />
+      <RecordList :records="records" @delete="onDelete"/>
     </v-sheet>
   </v-container>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 import RecordList from "../components/record/RecordList.vue";
-import { useListRecords } from '../services/record.service';
+import { useDeleteRecord, useListRecords } from "../services/record.service";
+import { Record } from "../types";
 
 export default defineComponent({
   name: "RecordView",
@@ -21,5 +22,18 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-  const { records } = useListRecords();
+const records = ref<Record[]>([]);
+
+const listRecords = useListRecords();
+const deleteRecord = useDeleteRecord();
+
+onMounted(async () => {
+  records.value = await listRecords();
+});
+
+const onDelete = async (recordId: number) => {
+  console.log("Deleting record", recordId);
+  await deleteRecord(recordId);
+  records.value = await listRecords();
+};
 </script>

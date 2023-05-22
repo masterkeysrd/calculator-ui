@@ -22,7 +22,9 @@
           <td>{{ record.date }}</td>
           <td c>{{ record.result }}</td>
           <td class="text-end">
-            <v-btn size="small" color="error" text> Delete </v-btn>
+            <v-btn color="error" small @click="onDelete(record.id)">
+              Delete
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -47,6 +49,7 @@ interface RecordProps {
 }
 
 const props = defineProps<RecordProps>();
+const emits = defineEmits(["delete"]);
 
 const formatCurrency = useFormatCurrency();
 
@@ -60,4 +63,8 @@ const records = computed(() => {
     };
   });
 });
+
+const onDelete = (id: number) => {
+  emits("delete", id);
+};
 </script>
