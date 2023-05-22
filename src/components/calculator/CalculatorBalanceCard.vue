@@ -28,7 +28,7 @@ import {
 } from "../../stores/profile.store";
 
 export default defineComponent({
-  name: "BalanceCard",
+  name: "calculator-balance-card",
 });
 </script>
 
