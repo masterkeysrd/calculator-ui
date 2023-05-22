@@ -1,3 +1,4 @@
+import { ref } from "vue";
 import { useHttp } from "../common/http";
 
 const API_URL = "http://localhost:8080/api/v1/calculations";
@@ -15,4 +16,30 @@ export function useCalculate() {
   }
 
   return calculate;
+}
+
+
+export function usePerformCalculation() {
+  const result = ref("");
+  const error = ref("");
+
+  const calculate = useCalculate();
+
+
+  async function performOperation(operationId: number, args: string[]) {
+    error.value = "";
+    try {
+      result.value = await calculate(operationId, args);
+    }
+    catch (err: any) {
+      console.log(err.response?.data);
+      error.value = err.response?.data?.message;
+    }
+  }
+
+  return {
+    result,
+    error,
+    performOperation,
+  };
 }

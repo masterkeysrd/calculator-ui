@@ -20,13 +20,21 @@
               v-model="number2"
             ></v-text-field>
           </v-col>
+          <ResultAlert :show="showResult" :result="result"></ResultAlert>
+          <template v-if="error">
+            <v-col cols="12" md="12">
+              <v-alert v-if="error" type="error" closable>
+                {{ error }}
+              </v-alert>
+            </v-col>
+          </template>
           <template v-for="widget in widgets" :key="widget.id">
             <v-col v-if="widget.symbol" :cols="widget.size">
               <v-btn
                 size="large"
                 :color="widget.btnColor"
                 class="w-100"
-                @click="performOperation(widget)"
+                @click="submitOperation(widget)"
               >
                 {{ widget.symbol }}
               </v-btn>
@@ -42,17 +50,20 @@
 import { Ref, defineComponent, ref } from "vue";
 import { useListOperations } from "../../services/operation.service";
 import { useOperationWidgetMapping } from "../../common/utils/operation-widget.util";
-import { useCalculate } from "../../services/calculator.service";
-import { OperationWidget } from '../../types';
+import { usePerformCalculation } from "../../services/calculator.service";
+import { OperationWidget } from "../../types";
 import { useRefreshBalance } from "../../stores/profile.store";
+import ResultAlert from "./ResultAlert.vue";
 
 export default defineComponent({
   name: "Calculator",
+  components: { ResultAlert },
 });
 </script>
 
 <script lang="ts" setup>
 const form: Ref<any> = ref(null);
+const showResult = ref(true);
 const number1 = ref(0);
 const number2 = ref(0);
 
@@ -63,10 +74,11 @@ const rules = ref({
 
 const { operations } = useListOperations();
 const widgets = useOperationWidgetMapping(operations);
-const calculate = useCalculate();
+const { result, error, performOperation } = usePerformCalculation();
 const refreshBalance = useRefreshBalance();
 
-const performOperation = async (operation: OperationWidget) => {
+const submitOperation = async (operation: OperationWidget) => {
+  showResult.value = false;
   await form.value.resetValidation();
   rules.value = operation.rules as any;
   const { valid } = await form.value.validate();
@@ -75,12 +87,16 @@ const performOperation = async (operation: OperationWidget) => {
     return;
   }
 
-  const result = await calculate(operation.id, [
+  await performOperation(operation.id, [
     number1.value.toString(),
     number2.value.toString(),
   ]);
 
-  console.log(result);
+  if (error.value) {
+    return;
+  }
+
   refreshBalance();
+  showResult.value = true;
 };
 </script>
