@@ -1,36 +1,34 @@
-import { Ref, ref } from "vue";
-import { useHttp } from "../common/http";
+import { Ref, ref, watch } from "vue";
 import { User, UserBalance } from "../types";
+import config from "../common/config";
+import { useGet } from "../common/http/http-client";
 
-const API_URL = "http://localhost:8080/api/v1/users/";
+const baseUrl = `${config.apiUrl}/v1/users`;
 
-export function useGetMe() {
-  const http = useHttp();
-  const me: Ref<User | undefined> = ref();
+export function useGetMe(url = `${baseUrl}/me`) {
+  const { result, error } = useGet<User>(url);
 
-  async function getMe() {
-    try {
-      const response = await http.value.get(API_URL + "me");
-      me.value = response.data;
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  return { me, getMe };
+  return { me: result, error };
 }
 
-export function useGetMyBalance() {
-  const http = useHttp();
-  const balance: Ref<UserBalance> = ref({
-    amount: 0,
-    inFlightAmount: 0,
+export function useGetMyBalance(url = `${baseUrl}/me/balance`) {
+  const { result, error } = useGet<UserBalance>(url);
+  const balance: Ref<UserBalance> = ref(initialBalance());
+
+  watch(result, (value) => {
+    balance.value = value as UserBalance;
   });
 
-  async function loadMyBalance() {
-    const response = await http.value.get(`${API_URL}me/balance`);
-    balance.value = response.data;
-  }
+  watch(error, () => {
+    balance.value = initialBalance();
+  });
 
-  return { balance, loadMyBalance };
+  return { balance, error };
+}
+
+function initialBalance() {
+  return {
+    amount: 0,
+    inFlightAmount: 0,
+  };
 }
