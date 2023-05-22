@@ -4,6 +4,7 @@ import { ref, watch } from "vue";
 import AuthService from "../../services/AuthService";
 import { useRouter } from "vue-router";
 import { AxiosError } from "axios";
+import { JwtPayload } from "jwt-decode";
 
 export function useIsAuthenticated() {
   const token = useAccessToken();
@@ -17,16 +18,10 @@ export function useIsAuthenticated() {
       return;
     }
 
-    const { exp } = payload.value as any;
+    const { exp } = payload.value as JwtPayload;
     const now = Date.now() / 1000;
-    console.log(exp, now);
 
-    if (exp > now) {
-      authenticated.value = true;
-      return;
-    }
-
-    authenticated.value = false;
+    authenticated.value = exp ? exp > now : false;
   }
 
   watch(payload, checkToken, { immediate: true });
