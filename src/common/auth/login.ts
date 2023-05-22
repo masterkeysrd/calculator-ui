@@ -8,23 +8,14 @@ import { JwtPayload } from "jwt-decode";
 
 export function useIsAuthenticated() {
   const token = useAccessToken();
-
-  const authenticated = ref(false);
   const { payload } = useJwt(token);
+  const authenticated = ref(false);
 
-  function checkToken() {
-    if (!payload.value) {
-      authenticated.value = false;
-      return;
-    }
+  const checkIfAuthenticated = (newPayload: JwtPayload | null) => {
+    authenticated.value = newPayload ? verifyPayload(newPayload) : false;
+  };
 
-    const { exp } = payload.value as JwtPayload;
-    const now = Date.now() / 1000;
-
-    authenticated.value = exp ? exp > now : false;
-  }
-
-  watch(payload, checkToken, { immediate: true });
+  watch(payload, checkIfAuthenticated, { immediate: true });
 
   return authenticated;
 }
@@ -59,4 +50,11 @@ export function useLogout() {
   }
 
   return logout;
+}
+
+export function verifyPayload(payload: JwtPayload): boolean {
+  const { exp } = payload;
+  const now = Date.now() / 1000;
+
+  return exp ? exp > now : false;
 }
