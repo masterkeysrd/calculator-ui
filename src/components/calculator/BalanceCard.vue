@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onMounted } from "vue";
+import { computed, defineComponent } from "vue";
 import { useFormatCurrency } from "../../common/utils/currency.util";
 import {
   useProfileBalance,
@@ -34,12 +34,11 @@ export default defineComponent({
 
 <script lang="ts" setup>
 const { balance } = useProfileBalance();
-const loadProfileBalance = useLoadProfileBalance();
+
+// TODO: add error handling
+const { } = useLoadProfileBalance();
 const formatCurrency = useFormatCurrency();
 
-onMounted(() => {
-  loadProfileBalance();
-});
 
 const balanceClass = computed(() => {
   return balance.value.amount > 0 ? "text-success" : "text-error";
