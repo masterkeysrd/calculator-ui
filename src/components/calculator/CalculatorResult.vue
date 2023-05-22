@@ -28,7 +28,7 @@ import { computed, defineComponent } from "vue";
 import { useFormatCurrency } from '../../common/utils/currency.util';
 
 export default defineComponent({
-  name: "ResultAlert",
+  name: "calculator-result",
 });
 </script>
 
