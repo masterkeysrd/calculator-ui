@@ -46,6 +46,8 @@ interface RecordProps {
   records: Record[];
 }
 
+const props = defineProps<RecordProps>();
+
 const formatCurrency = useFormatCurrency();
 
 const records = computed(() => {
@@ -58,6 +60,4 @@ const records = computed(() => {
     };
   });
 });
-
-const props = defineProps<RecordProps>();
 </script>
