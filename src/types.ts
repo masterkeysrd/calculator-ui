@@ -1,3 +1,17 @@
+export interface Profile extends User {
+  balance: UserBalance;
+}
+
+export interface User {
+  id: number;
+  username: string;
+}
+
+export interface UserBalance {
+  amount: number;
+  inFlightAmount: number;
+}
+
 export type OperationWidget = Operation & OperationWidgetMeta;
 
 export type Operation = {
