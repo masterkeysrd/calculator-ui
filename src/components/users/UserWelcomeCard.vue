@@ -11,7 +11,7 @@ import { defineComponent } from "vue";
 import { useProfile } from "../../stores/profile.store";
 
 defineComponent({
-  name: "WelcomeUser",
+  name: "user-welcome-card",
 });
 </script>
 
