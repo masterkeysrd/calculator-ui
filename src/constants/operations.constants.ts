@@ -14,31 +14,31 @@ const commonRules = {
 export const operationWidgetMapping: OperationWidgetMapping = {
   addition: {
     symbol: "+",
-    btnColor: "primary",
+    btnColor: "warning",
     size: "md-3",
     rules: commonRules,
   },
   subtraction: {
     symbol: "-",
-    btnColor: "primary",
+    btnColor: "warning",
     size: "md-3",
     rules: commonRules,
   },
   multiplication: {
     symbol: "*",
-    btnColor: "primary",
+    btnColor: "warning",
     size: "md-3",
     rules: commonRules,
   },
   division: {
     symbol: "/",
-    btnColor: "primary",
+    btnColor: "warning",
     size: "md-3",
     rules: commonRules,
   },
-  squareRoot: {
+  square_root: {
     symbol: "√",
-    btnColor: "primary",
+    btnColor: "warning",
     size: "md-3",
     rules: {
       number1: commonRules.number1,
@@ -46,8 +46,8 @@ export const operationWidgetMapping: OperationWidgetMapping = {
   },
   random_string: {
     symbol: "Random String",
-    btnColor: "secondary",
-    size: "md-12",
+    btnColor: "error",
+    size: "md-9",
     rules: {},
   },
 };
