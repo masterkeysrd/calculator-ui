@@ -18,15 +18,24 @@ export const useHttp = () => {
 export function useGet<T>(url: string | Ref<string>) {
   const result: Ref<T | null> = ref(null);
   const error: Ref<any> = ref(null);
+  const loading = ref(false);
 
   function doGet() {
-    result.value = null;
-    error.value = null;
+    loading.value = true;
     client
       .get(unref(url))
       .then((res) => res.data)
-      .then((data) => (result.value = data))
-      .catch((err) => (error.value = err));
+      .then((data) => {
+        result.value = data;
+        error.value = null;
+      })
+      .catch((err) => {
+        error.value = err;
+        result.value = null;
+      })
+      .finally(() => {
+        (loading.value = false)
+      });
   }
 
   if (isRef(url)) {
@@ -35,7 +44,7 @@ export function useGet<T>(url: string | Ref<string>) {
     doGet();
   }
 
-  return { result, error };
+  return { result, loading, error };
 }
 
 export default client;
