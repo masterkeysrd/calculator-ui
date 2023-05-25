@@ -1,5 +1,4 @@
 import {
-  AxiosResponse,
   HttpStatusCode,
   InternalAxiosRequestConfig,
 } from "axios";
@@ -18,7 +17,7 @@ export function AuthRequestInterceptor(req: InternalAxiosRequestConfig) {
 
 export function AuthResponseInterceptor(error: any) {
   const res = error.response;
-  if (res.status === HttpStatusCode.Forbidden) {
+  if (res.status === HttpStatusCode.Unauthorized) {
     const token = useAccessToken();
     const router = useRouter();
     token.value = "";
