@@ -1,70 +1,83 @@
 <template>
   <v-container>
-    <v-table>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Operation</th>
-          <th>Amount</th>
-          <th>Balance</th>
-          <th>Date</th>
-          <th>Operation Result</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="record in records" :key="record.id">
-          <td>{{ record.id }}</td>
-          <!-- TODO: Operation type should be added -->
-          <td>Testing</td>
-          <td>{{ record.amount }}</td>
-          <td>{{ record.userBalance }}</td>
-          <td>{{ record.date }}</td>
-          <td c>{{ record.result }}</td>
-          <td class="text-end">
-            <v-btn color="error" small @click="onDelete(record.id)">
-              Delete
-            </v-btn>
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+    <div class="mb-5 record-list-search-container">
+      <v-text-field
+        v-model="search"
+        density="comfortable"
+        variant="outlined"
+        label="Search"
+        prepend-inner-icon="mdi-magnify"
+        single-line
+        hide-details
+      />
+      <span class="text-error" v-if="search !== '' && search.length < 3">
+        Search term must be at least 3 characters
+      </span>
+    </div>
+    <v-data-table-server
+      :loading="loading"
+      :search="pageable.query"
+      :page="pageable.page"
+      :items-per-page="pageable.size"
+      :headers="tableHeaders"
+      :items-length="totalCount"
+      :items="records"
+      item-value="id"
+      @update:options="onPageChanged"
+    />
   </v-container>
 </template>
 
-<script lang="ts">
-import { computed, defineComponent } from "vue";
-
-export default defineComponent({
-  name: "RecordList",
-});
-</script>
-
 <script lang="ts" setup>
-import { useFormatCurrency } from "../../common/utils/currency.util";
-import { Record } from "../../types";
+import { computed, ref, watch } from "vue";
+import { useListRecords } from "../../services/record.service";
+import { debounce } from "../../common/utils/debounce.utils";
+import { getSort } from "../../common/utils/sort.uitls";
+import { mapRecord } from "../../common/utils/records.utils";
+import { tableHeaders } from "../../constants/records.contants";
 
-interface RecordProps {
-  records: Record[];
-}
+let initial = true;
+const search = ref("");
+const pageable = ref({
+  query: "",
+  page: 1,
+  size: 10,
+  sort: "",
+});
 
-const props = defineProps<RecordProps>();
-const emits = defineEmits(["delete"]);
-
-const formatCurrency = useFormatCurrency();
+const { result, loading } = useListRecords(pageable);
 
 const records = computed(() => {
-  return props.records.map((record) => {
-    return {
-      ...record,
-      userBalance: formatCurrency(record.userBalance),
-      amount: formatCurrency(record.amount),
-      date: new Date(record.date).toLocaleDateString(),
-    };
-  });
+  return result.value?.items?.map(mapRecord) || [];
 });
 
-const onDelete = (id: number) => {
-  emits("delete", id);
+const totalCount = computed(() => {
+  return result.value?.total_count || 0;
+});
+
+const onSearchChange = debounce(() => {
+  if (search.value !== "" && search.value.length < 3) {
+    return;
+  }
+
+  pageable.value = {
+    ...pageable.value,
+    query: search.value,
+  };
+}, 500);
+
+watch(search, () => onSearchChange());
+
+const onPageChanged = (event: any) => {
+  if (initial) {
+    initial = false;
+    return;
+  }
+  pageable.value = {
+    query: search.value,
+    page: event.page,
+    size: event.itemsPerPage,
+    sort: event.sortBy.map(getSort).join(","),
+  };
 };
 </script>

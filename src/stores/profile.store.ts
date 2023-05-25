@@ -7,7 +7,7 @@ const state = reactive<Profile>({
   username: "",
   balance: {
     amount: 0,
-    inFlightAmount: 0,
+    amountInFlight: 0,
   },
 });
 

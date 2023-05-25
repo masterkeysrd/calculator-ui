@@ -26,9 +26,9 @@ export function useGetMyBalance(url = `${baseUrl}/me/balance`) {
   return { balance, error };
 }
 
-function initialBalance() {
+function initialBalance(): UserBalance {
   return {
     amount: 0,
-    inFlightAmount: 0,
+    amountInFlight: 0,
   };
 }

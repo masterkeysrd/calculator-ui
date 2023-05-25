@@ -12,7 +12,7 @@ export function useListOperations(url = baseUrl) {
   const operations = ref<Operation[]>([]);
 
   watch(result, (value) => {
-    operations.value = value?.data as Operation[];
+    operations.value = value?.items as Operation[];
   });
 
   return { operations, error };
