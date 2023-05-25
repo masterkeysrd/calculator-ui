@@ -1,18 +1,58 @@
-# Vue 3 + TypeScript + Vite
+# Calculator App
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Calculator App is a UI application that allows the user to perform basic arithmetic operations, random string generation, and view the records of the previous calculations.
 
-## Recommended IDE Setup
+This application is built using `Vue.js` and `Typescript`.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Demo
 
-## Type Support For `.vue` Imports in TS
+![Demo](./imgs/demo.gif)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## How to get working from the source code
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+You will need:
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+- Node.js - for compiling the source code and running the application it comes with `npm` package manager follow the instructions on <https://nodejs.org/en/download>
+- Git - for cloning the repository <https://git-scm.com/downloads>
+- Browser - for running the application
+
+> Note: The application depends on the [Calculation Service](https://github.com/masterkeysrd/calculation-service) to perform the calculations and store the records. To get the application working you will need to setup the Calculation Service first.
+
+### Steps to setup the local environment
+
+#### 1. Clone the repository
+
+```bash
+git clone git@github.com:masterkeysrd/calculator-ui.git
+```
+
+or if you are using `https`:
+
+```bash
+git clone https://github.com/masterkeysrd/calculator-ui.git
+```
+
+#### 2. Install the dependencies
+
+```bash
+cd calculator-ui
+npm install
+```
+
+#### 3. Configure the environment variables
+
+Copy the `.env.example` file and rename it to `.env.local` and set the values of the variables.
+
+```bash
+cp .env.example .env.local
+```
+
+#### 4. Run the application
+
+```bash
+npm run dev
+```
+
+#### 5. Open the browser
+
+Open the browser and go to <http://localhost:5174/>
