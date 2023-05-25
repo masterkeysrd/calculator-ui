@@ -13,7 +13,7 @@ export interface User {
 
 export interface UserBalance {
   amount: number;
-  inFlightAmount: number;
+  amountInFlight: number;
 }
 
 export type OperationWidget = Operation & OperationWidgetMeta;
@@ -34,7 +34,7 @@ export interface OperationWidgetMeta {
   size: string;
   rules: {
     [key: string]: Array<(value: string) => boolean | string>;
-  }
+  };
 }
 
 export interface CalculatorResult {
@@ -45,17 +45,31 @@ export interface CalculatorResult {
   date: string;
 }
 
+export interface Searchable extends Pageable {
+  query: string;
+}
+
 export interface Record {
   id: number;
   userId: number;
   operationId: number;
+  operationType: string;
   amount: number;
   userBalance: number;
-  result: number;
-  date: string;
+  result: number | string;
+  createdAt: string;
+}
+
+export interface Pageable {
+  page: number;
+  size: number;
+  sort: string;
 }
 
 export interface PaginatedResponse<T> {
-  data: T[];
-  total: number;
+  items: T[];
+  page: number;
+  pageSize: number;
+  total_count: number;
+  totalPages: number;
 }
