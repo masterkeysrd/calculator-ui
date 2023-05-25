@@ -38,7 +38,7 @@
       </v-form>
       <div class="mt-5">
         <v-btn
-          text
+          text="true"
           color="secondary"
           size="large"
           class="w-100"

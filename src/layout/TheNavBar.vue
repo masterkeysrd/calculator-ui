@@ -1,5 +1,5 @@
 <template>
-  <v-btn v-for="link in links" :key="link.name" :to="link.path" :class="link.class" text>
+  <v-btn v-for="link in links" :key="link.name" :to="link.path" :class="link.class" text="true">
     {{ link.name }}
   </v-btn>
 </template>
