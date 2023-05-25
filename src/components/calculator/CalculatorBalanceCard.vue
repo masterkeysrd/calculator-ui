@@ -49,6 +49,6 @@ const balanceText = computed(() => {
 });
 
 const inFlightBalanceText = computed(() => {
-  return formatCurrency(balance.value.inFlightAmount);
+  return formatCurrency(balance.value.amountInFlight);
 });
 </script>
