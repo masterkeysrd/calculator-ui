@@ -20,14 +20,23 @@
               v-model="number2"
             ></v-text-field>
           </v-col>
-          <calculator-result :show="showResult" :result="result" />
-          <template v-if="error">
-            <v-col cols="12" md="12">
-              <v-alert v-if="error" type="error" closable>
-                {{ error }}
-              </v-alert>
-            </v-col>
-          </template>
+          <v-col v-if="!loading" cols="12" md="12">
+            <v-divider></v-divider>
+          </v-col>
+          <v-col v-if="loading" cols="12" md="12">
+            <v-progress-linear
+              indeterminate
+              color="primary"
+            ></v-progress-linear>
+          </v-col>
+          <v-col cols="12" md="12">
+            <calculator-result :show="showResult" :result="result" />
+          </v-col>
+          <v-col v-if="error" cols="12" md="12">
+            <v-alert v-if="error" type="error" closable>
+              {{ error }}
+            </v-alert>
+          </v-col>
           <template v-for="widget in widgets" :key="widget.id">
             <v-col v-if="widget.symbol" :cols="widget.size">
               <v-btn
@@ -35,6 +44,7 @@
                 :color="widget.btnColor"
                 class="w-100"
                 @click="submitOperation(widget)"
+                :disabled="loading"
               >
                 {{ widget.symbol }}
               </v-btn>
@@ -72,7 +82,7 @@ const rules = ref({
 });
 
 const { operations } = useListOperations();
-const { result, error, performOperation } = usePerformCalculation();
+const { result, error, loading, performOperation } = usePerformCalculation();
 const refreshBalance = useRefreshBalance();
 
 const widgets = computed(() => {

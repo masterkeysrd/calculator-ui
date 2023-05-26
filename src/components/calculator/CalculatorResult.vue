@@ -1,6 +1,5 @@
 <template>
-  <v-col cols="12" md="12" v-if="props.show">
-    <v-alert v-if="result" type="success" closable>
+    <v-alert v-if="props.show && result" type="success" closable>
       <div>
         <div>
           <span class="font-weight-bold">Record ID:</span>&nbsp;
@@ -20,7 +19,6 @@
         </div>
       </div>
     </v-alert>
-  </v-col>
 </template>
 
 <script lang="ts">

@@ -23,23 +23,28 @@ export function useCalculate() {
 export function usePerformCalculation() {
   const result = ref("");
   const error = ref("");
+  const loading = ref(false);
 
   const calculate = useCalculate();
 
 
   async function performOperation(operationId: number, args: string[]) {
-    error.value = "";
+    loading.value = true;
     try {
       result.value = await calculate(operationId, args);
+      error.value = "";
     }
     catch (err: any) {
+      result.value = "";
       error.value = err.response?.data?.message;
     }
+    loading.value = false;
   }
 
   return {
     result,
     error,
+    loading,
     performOperation,
   };
 }
