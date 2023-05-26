@@ -22,12 +22,28 @@ export function useListRecords(search: Searchable | Ref<Searchable>) {
 
 export function useDeleteRecord() {
   const http = useHttp();
+  const error = ref(null);
+  const loading = ref(false);
 
   async function deleteRecord(id: number) {
-    await http.value.delete(`${API_URL}/${id}`);
+    loading.value = true;
+    error.value = null;
+
+    try {
+      await http.value.delete(`${API_URL}/${id}`);
+    } catch (e: any) {
+      error.value = e.response?.data?.message || e.message;
+      console.error(e);
+    }
+
+    loading.value = false;
   }
 
-  return deleteRecord;
+  return {
+    error,
+    loading,
+    deleteRecord,
+  };
 }
 
 function createUrl(url: string, params: any) {

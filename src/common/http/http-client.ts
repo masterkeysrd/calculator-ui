@@ -38,13 +38,22 @@ export function useGet<T>(url: string | Ref<string>) {
       });
   }
 
+  function refresh() {
+    doGet();
+  }
+
   if (isRef(url)) {
     watchEffect(doGet);
   } else {
     doGet();
   }
 
-  return { result, loading, error };
+  return {
+    result,
+    error,
+    loading,
+    refresh,
+  };
 }
 
 export default client;
