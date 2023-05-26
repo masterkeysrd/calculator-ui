@@ -10,6 +10,7 @@
           label="Username"
           :rules="rules.username"
           class="mb-5"
+          type="email"
         ></v-text-field>
         <v-text-field
           id="password"
@@ -32,6 +33,7 @@
             size="large"
             class="w-100"
             type="submit"
+            :loading="loading"
             >Login</v-btn
           >
         </div>
@@ -64,7 +66,7 @@ export default defineComponent({
 const form: Ref<any> = ref(null);
 const username = ref("");
 const password = ref("");
-const { login, error } = useLogin();
+const { login, loading, error } = useLogin();
 
 const rules = {
   username: [
@@ -75,10 +77,10 @@ const rules = {
 };
 
 async function signIn() {
-  const { valid } = await form?.value?.validate() || {};
+  const { valid } = (await form?.value?.validate()) || {};
   if (!valid) {
-    return
-  };
+    return;
+  }
 
   login(username.value, password.value);
 }
