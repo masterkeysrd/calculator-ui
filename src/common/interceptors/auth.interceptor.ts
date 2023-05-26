@@ -1,9 +1,9 @@
 import {
+  AxiosError,
   HttpStatusCode,
   InternalAxiosRequestConfig,
 } from "axios";
 import { useAccessToken } from "../auth/token";
-import { useRouter } from "vue-router";
 
 export function AuthRequestInterceptor(req: InternalAxiosRequestConfig) {
   const token = useAccessToken();
@@ -15,13 +15,20 @@ export function AuthRequestInterceptor(req: InternalAxiosRequestConfig) {
   return req;
 }
 
-export function AuthResponseInterceptor(error: any) {
-  const res = error.response;
-  if (res.status === HttpStatusCode.Unauthorized) {
-    const token = useAccessToken();
-    const router = useRouter();
-    token.value = "";
-    router.push("/login");
+export function AuthResponseInterceptor(error: AxiosError) {
+  const res = error.response; 
+  const req = error.config as any;
+
+  if (req.skipAuth)  {
+    return Promise.reject(error);
+  }
+
+  if (res?.status === HttpStatusCode.Unauthorized) {
+    localStorage.removeItem("access_token");
+    sessionStorage.removeItem("access_token"); 
+
+    window.location.href = "/login";
+    return;
   }
 
   return Promise.reject(error);

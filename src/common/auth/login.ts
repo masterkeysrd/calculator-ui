@@ -24,8 +24,10 @@ export function useLogin() {
   const token = useAccessToken();
   const router = useRouter();
   const error = ref("");
+  const loading = ref(false);
 
   async function login(username: string, password: string) {
+    loading.value = true;
     try {
       const tokens = await AuthService.login(username, password);
       token.value = tokens.access_token;
@@ -33,11 +35,16 @@ export function useLogin() {
     } catch (err) {
       if (err instanceof AxiosError) {
         error.value = err.response?.data?.message;
+        return
       }
+      error.value = "Something went wrong";
+      console.error(err);
+    } finally {
+      loading.value = false;
     }
   }
 
-  return { login, error };
+  return { login, loading, error };
 }
 
 export function useLogout() {
